@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>HearTalk - Main</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- Cropper.js CSS & JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <link rel="icon" href="/favicon.ico" type="images/favicon.ico">
+
+</head>
+<body class="main-page">
+
+    <header>
+        <div class="header-content">
+            <!-- メニューボタン -->
+            <button id="menu-toggle" class="menu-toggle-btn" aria-label="メニューを開く">
+                <i class="fas fa-bars"></i> MENU
+            </button>
+
+            <!-- ヘッダータイトル -->
+            <h1>
+                <span class="icon-container">
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-comment"></i> <!-- メッセージアイコン -->
+                </span>
+                HearTalk - Main
+            </h1>
+            
+        </div>
+
+        <!-- サイドメニュー -->
+        <nav id="sidebar" class="sidebar" aria-label="サイドメニュー">
+            <ul>
+                <li><button id="sign-out" class="header-signout-btn">サインアウト</button></li>
+                <li>
+                    <a href="https://ah.iit.tsukuba.ac.jp/" target="_blank" rel="noopener noreferrer" class="external-link">
+                        <i class="fas fa-link"></i> Research Lab Page
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/@appliedhapticslaboratory" target="_blank" rel="noopener noreferrer" class="external-link youtube">
+                        <i class="fab fa-youtube youtube-logo"></i> YouTube
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- サイドメニューオーバーレイ -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    </header>
+    
+    <!-- ローディング画面 -->
+    <div id="loading-screen" role="alert" aria-busy="true" aria-live="assertive" aria-label="データを読み込んでいます">
+        <span class="heart-container">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-comment comment-icon"></i> <!-- コメントアイコンを追加 -->
+        </span>
+    </div>
+
+
+
+    <div class="container main-container">
+        <!-- ユーザー情報カード -->
+        <div class="user-info">
+            
+            <div class="card-header">
+                <h2>My Account</h2> <!-- 左上に表示する文字 -->
+            </div>
+            <!-- 左カラム: 画像 -->
+            <div class="left">
+                <div class="profile-image-container">
+                    <img id="user-image" src="" alt="プロフィール画像" loading="lazy">
+                </div>
+            </div>
+            
+            <!-- 中央カラム: 名前, 心拍数, プロフィール編集ボタン -->
+            <div class="center">
+                <div class="user-name">
+                    <span id="user-name"></span>
+                </div>
+                <div class="heart-rate-stack">
+                    <span id="user-heart-rate"></span>
+                </div>
+                <button id="edit-profile">プロフィール編集</button>
+            </div>
+            
+            <!-- 右カラム: QRコード -->
+            <div class="right qr-section">
+                <div class="qr-card">
+                    <h3>あなたのQRコード</h3>
+                    <div id="qr-code"></div>
+                    <p class="qr-hint">このQRコードをフレンドに提示</p>
+                </div>
+            </div>
+            
+        </div>        
+
+        <!-- 心拍数履歴グラフ -->
+                <canvas id="heartRateChart" width="400" height="200" aria-label="心拍数履歴グラフ" role="img"></canvas>
+
+        <!-- フレンドのアカウント情報 -->
+        <div class="permitted-users">
+            <div class="card-header">
+                <h2>Friend</h2> <!-- 左上に表示する文字 -->
+            </div>
+            <input type="text" id="friend-search" placeholder="フレンドを検索" aria-label="フレンド検索">
+            <div id="permitted-users-list" aria-live="polite"></div>
+        </div>
+
+
+    </div>
+
+    <!-- プロフィール編集モーダル -->
+    <div id="edit-profile-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-profile-title">
+        <div class="modal-content">
+            <span class="close-button" aria-label="閉じる">&times;</span>
+            <h2 id="edit-profile-title">プロフィール編集</h2>
+            <form id="edit-profile-form">
+                <label for="edit-username">名前:</label>
+                <input type="text" id="edit-username" name="edit-username" required aria-required="true">
+                
+                <div class="image-upload-section">
+                    <!-- ドラッグ＆ドロップエリア -->
+                    <div class="upload-area" id="drop-zone">
+                        <div class="upload-instructions">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>画像をドラッグ＆ドロップまたはクリックして選択</p>
+                        </div>
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                    </div>
+                    
+                    <!-- クロップエディタ -->
+                    <div class="crop-editor" style="display: none;">
+                        <div class="crop-container" id="crop-container"></div>
+                        <div class="crop-controls">
+                            
+                        </div>
+                    </div>
+                    
+                    <!-- プレビュー表示 -->
+                    <div class="image-preview" id="image-preview">
+                        <img src="" alt="プレビュー画像">
+                    </div>
+                </div>
+                
+                <button type="submit" class="save-btn">保存</button>
+            </form>
+            <div id="edit-error-message" class="error-message" role="alert"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK 等スクリプト -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- メイン用スクリプト -->
+    <script src="scripts/main.js"></script>
+</body>
+</html>

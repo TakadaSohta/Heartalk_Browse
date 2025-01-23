@@ -1,0 +1,11 @@
+{
+    "header_title": "ログイン",
+    "signin": "サインイン",
+    "signup": "新規登録",
+    "signin_email": "メールでサインイン",
+    "error_signin": "サインインに失敗しました。",
+    "error_signup": "新規登録に失敗しました。",
+    "error_empty_fields": "メールアドレスとパスワードを入力してください。",
+    "email_placeholder": "メールアドレス",
+    "password_placeholder": "パスワード"
+}

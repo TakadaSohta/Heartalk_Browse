@@ -1,0 +1,1388 @@
+/* ===== 全体のリセット ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+/* ===== 共通のフォント設定と背景 ===== */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(240, 244, 248, 0.6);
+    z-index: -1;
+}
+
+/* ===== ヘッダースタイル ===== */
+header {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem; /* 16px 32px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.header-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+header h1 i {
+    color: #e74c3c; /* ハートアイコンの色を赤に設定 */
+    font-size: 1.5rem;
+}
+
+/* ===== ヘッダーリンクのスタイル ===== */
+.header-links .external-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+.header-links .external-link:hover {
+    color: #ffffff;
+    background-color: #0071e3;
+    transform: translateY(-2px);
+}
+
+.header-links .external-link i {
+    font-size: 1.2rem;
+}
+
+/* ===== サイドバーリンクのスタイル ===== */
+.sidebar .external-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: transparent;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.sidebar .external-link:hover {
+    color: #ffffff;
+    background-color: #0071e3;
+    transform: translateY(-2px);
+}
+
+.sidebar .external-link i {
+    font-size: 1.2rem;
+}
+
+/* ===== 言語切り替えボタンのスタイル ===== */
+.language-switcher {
+    display: flex;
+    gap: 10px;
+}
+
+.language-switcher button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    color: #34495e;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.language-switcher button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.language-switcher button:active {
+    transform: translateY(0);
+}
+
+.language-switcher button.active {
+    background-color: #3498db;
+    color: white;
+}
+
+/* ===== 共通のコンテナスタイル ===== */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+/* ===== メインコンテナ ===== */
+.main-page .main-container {
+    display: flex;
+    flex-direction: column; /* 大枠は縦積み */
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ===== ユーザー情報セクション ===== */
+.main-page .user-info {
+    position: relative;
+    display: flex;
+    justify-content: space-between; /* 左・中央・右に分割 */
+    align-items: center;           /* 縦中央揃え */
+    gap: 2rem;                     /* カラム間の余白 */
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    margin: 24px auto;
+    max-width: 1200px; 
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* 絶対配置を残すならこう */
+.main-page .user-info .card-header {
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    gap: 3rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* セレクタを .card-header h2 に修正 */
+.main-page .user-info .card-header h2 {
+    font-size: 2.1rem;
+    font-weight: 300;
+    color: #1d1d1f;
+    margin: 0;
+}
+
+/* 左カラム（画像） */
+.main-page .user-info .left {
+    flex: 0 0 auto; /* 画像コンテンツだけで幅を取る */
+}
+
+/* 中央カラム（名前・心拍数・編集ボタン） */
+.main-page .user-info .center {
+    flex: 1;        /* 残りスペースを埋める */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;      /* 項目の間に余白 */
+}
+
+/* 右カラム（QRコード） */
+.main-page .user-info .right {
+    flex: 0 0 auto; /* 必要なら固定幅にしても良い */
+}
+
+/* ヘッダーのサインアウトボタン */
+.header-signout-btn {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 1rem; /* ヘッダー右端に寄せる場合など */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    max-width: 300px; 
+}
+.header-signout-btn:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.main-page .profile-main {
+    flex: 1; 
+    min-width: 300px; 
+}
+
+.main-page .profile-content {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    text-align: center;
+    gap: 6rem;
+}
+
+.main-page .profile-details p {
+    margin: 8px 0;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* ===== プロフィール画像を正方形トリミングするためのコンテナ ===== */
+.main-page .profile-image-container {
+    width: 200px;   /* 画像の幅を拡大 */
+    height: 200px;       /* 正方形の高さ */
+    border-radius: 50%;    /* 丸く表示したい場合。四角でよければ削除 */
+    overflow: hidden;      /* はみ出る部分を隠す */
+    border: 4px solid #f5f5f7;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.main-page .profile-image-container:hover {
+    transform: scale(1.05);
+}
+
+.main-page #user-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;       /* 画像を中央トリミング */
+    object-position: center;
+    display: block;
+}
+
+.mainpage .user-name {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.main-page .user-info-title {
+    display: flex;
+    justify-content: flex-start; /* 左寄せに修正 */
+    align-items: baseline;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.main-page #user-info-title {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #1d1d1f;
+    margin-bottom: 2px;
+    gap: 3rem; /* このgapは効かないので注意 */
+}
+
+.main-page #user-name {
+    font-size: 3rem;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 2px;
+}
+
+.main-page .heart-rate-stack {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.main-page #user-heart-rate {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #ff3b30; /* Appleの赤色 */
+    position: relative;
+}
+
+.main-page #user-heart-rate::after {
+    content: " bpm";
+    font-size: 1rem;
+    font-weight: 400;
+    color: #86868b;
+    margin-left: 4px;
+}
+
+/* ===== ボタンのスタイル ===== */
+.main-page .user-info button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin-bottom: 12px;
+    gap: 6rem;
+}
+
+.main-page #edit-profile {
+    background: #0071e3;
+    color: white;
+}
+
+.main-page #edit-profile:hover {
+    background: #0077ed;
+    transform: translateY(-2px);
+}
+
+.main-page #sign-out {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.main-page #sign-out:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+/* ===== QRコード部分 ===== */
+.main-page .qr-section {
+    flex: 1; 
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 300px;
+}
+
+.main-page .qr-card {
+    display: flex;
+    flex-direction: column; /* 縦積みに変更してもOK */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-page .qr-hint {
+    margin-top: 10px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* ===== 許可されたユーザーセクション ===== */
+.main-page .permitted-users {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-page .permitted-users .card-header {
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    margin-bottom: 20px; /* 検索欄との間隔を確保 */
+    text-align: left; /* 左寄せ */
+}
+
+.main-page .permitted-users .card-header h2 {
+    font-size: 2.1rem;
+    font-weight: 300;
+    color: #1d1d1f;
+    margin: 0;
+}
+
+.main-page #friend-search {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    gap: 2rem;
+}
+
+.main-page #permitted-users-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin: 20px auto 0;
+}
+
+/* メディアクエリでグリッド列を調整 */
+@media (max-width: 599px) {
+    .main-page #permitted-users-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 799px) {
+    .main-page #permitted-users-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1199px) {
+    .main-page #permitted-users-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-page #permitted-users-list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ===== フレンドカードのスタイル ===== */
+.main-page .user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 250px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #fafafa;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.main-page .user-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px) scale(1.05);
+}
+
+/* フレンドカード内の画像 */
+.main-page .user-card img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* フレンドカード内のユーザー情報 */
+.main-page .user-card .user-info {
+    text-align: center;
+    width: 100%;
+}
+
+.main-page .user-card {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.main-page .user-card .heart-rate {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* ===== フレンド検索バー ===== */
+.main-page #friend-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 60px; /* タイトル分の余白を確保 */
+}
+
+/* ===== ローディング画面 ===== */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(240, 244, 248, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; 
+}
+
+/* ハートコンテナのスタイル */
+.heart-container {
+    position: relative;
+    display: inline-block;
+    animation: beat 1s infinite;
+    font-size: 100px; /* アイコンのサイズ調整 */
+    color: #e74c3c; /* ハートの色 */
+}
+
+/* ハートアニメーションのキーフレーム */
+@keyframes beat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* コメントアイコンのスタイル */
+.comment-icon {
+    position: absolute;
+    bottom: -10px; /* ハートの下に配置 */
+    right: -10px;  /* ハートの右に配置 */
+    font-size: 40px; /* コメントアイコンのサイズ調整 */
+    color: #2ed573; /* コメントアイコンの色 */
+    animation: beat-comment 1s infinite;
+}
+
+/* コメントアイコンのアニメーション */
+@keyframes beat-comment {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* ローディング画面のスタイル調整 */
+#loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* 画面全体に表示 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* 背景の半透明 */
+    z-index: 9999; /* 他の要素より前面に表示 */
+}
+
+/* ===== プロフィール編集モーダルのスタイル ===== */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 3000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px; 
+    border-radius: 12px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+}
+
+/* フォームスタイル */
+#edit-profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-profile-form label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+#edit-profile-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#edit-profile-form button {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#edit-profile-form button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* ===== 共通のエラーメッセージ ===== */
+#error-message,
+#edit-error-message {
+    color: #d8000c;
+    background-color: #ffbaba;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* ===== ログインページ用スタイル ===== */
+.login-page .login-content {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 3rem;
+    align-items: flex-start;
+    justify-content: flex-start; /* centerからflex-startに変更 */
+    min-height: 70vh;
+    padding: 2rem;
+}
+
+/* ===== ログインページのビデオラッパー ===== */
+.login-page .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 133.33%; /* 3:4 のアスペクト比 */
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.login-page .video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* 80%から100%に変更 */
+    height: 100%; /* 80%から100%に変更 */
+    object-fit: cover; /* コンテナにフィットさせる */
+    border-radius: 12px;
+    /* image-rendering: optimizeQuality; 削除 */
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+    .login-page .video-wrapper {
+        padding-top: 133.33%; /* 3:4 のアスペクト比を維持 */
+    }
+}
+
+@media (max-width: 480px) {
+    .login-page .video-wrapper {
+        padding-top: 133.33%; /* 3:4 のアスペクト比を維持 */
+    }
+}
+
+/* ===== ログインセクション ===== */
+.login-page .login-section {
+    flex: 1;
+    max-width: 400px;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.login-page .sign-in-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.login-page .sign-in-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.login-page .sign-in-button img {
+    width: 28px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.login-page .sign-in-button:hover img {
+    transform: scale(1.1);
+}
+
+.login-page h2 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-size: 1.4rem;
+}
+
+.login-page h3 {
+    margin: 1.5rem 0 1rem;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.login-page #sign-in-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 2rem 0;
+}
+
+.login-page input[type="email"],
+.login-page input[type="password"] {
+    width: 100%;
+    padding: 0.875rem;
+    margin: 0.5rem 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background: rgba(255,255,255,0.9);
+}
+
+.login-page input:focus {
+    border-color: #0071e3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
+
+#email-sign-in,
+#email-sign-up {
+    width: 100%;
+    padding: 0.875rem;
+    margin: 1rem 0;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#email-sign-in {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+#email-sign-up {
+    background: linear-gradient(135deg, #2196F3, #1e88e5);
+    color: white;
+}
+
+.login-page #email-sign-in:hover,
+.login-page #email-sign-up:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== レスポンシブ調整 ===== */
+@media (max-width: 1024px) {
+    .login-page .login-content {
+        flex-wrap: wrap;
+        gap: 2rem;
+        padding: 2rem;
+        justify-content: space-between; /* centerからspace-betweenに変更 */
+    }
+    
+    .login-page .login-section {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+  
+    .login-page .login-content {
+        padding: 1rem;
+    }
+    
+    .login-page .login-section {
+        padding: 1.5rem;
+    }
+    
+    .login-page .sign-in-button {
+        font-size: 0.9rem;
+        padding: 0.875rem;
+    }
+    
+    .login-page .sign-in-button img {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .main-page .user-info {
+        flex-direction: row;
+    }
+
+    .main-page .profile-content {
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+    }
+
+    .main-page .qr-column {
+        order: -1;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-page .video-section {
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .login-page video {
+        border-radius: 8px;
+    }
+}
+
+/* ===== アニメーション ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== ユーティリティクラス ===== */
+.text-center { 
+    text-align: center; 
+}
+
+.shadow-md { 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+}
+
+.external-link.youtube:hover .youtube-logo {
+    animation: rotateLogo 0.5s forwards;
+}
+
+@keyframes rotateLogo {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* YouTube公式ロゴのスタイル */
+.external-link.youtube .youtube-logo {
+    width: 20px;
+    height: auto;
+}
+
+/* ===== YouTubeリンク特有のスタイル ===== */
+.external-link.youtube:hover {
+    background-color: #FF0000; 
+    color: #ffffff;
+}
+
+.external-link.youtube i {
+    color: #ffffff; 
+}
+
+.external-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* メニューボタンのスタイル */
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    color: #2c3e50; /* ダークグレーに変更 */
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu-toggle-btn:hover {
+    color: #0071e3; /* ホバー時に色を変更 */
+}
+
+/* サイドメニュー */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #f7f6f6; /* 背景色 */
+    position: fixed;
+    top: 0;
+    left: -250px; /* 初期位置は画面外 */
+    transition: left 0.3s ease; /* スライドアニメーション */
+    z-index: 1000; /* 他の要素より前面に表示 */
+    color: white;
+}
+
+/* サイドメニュー表示状態 */
+.sidebar.active {
+    left: 0; /* 表示時の位置 */
+}
+
+/* メニューリスト */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 60px; /* 上部スペース */
+}
+
+.sidebar ul li {
+    padding: 15px;
+    /*border-bottom: 1px solid #444; /* 下線 */
+}
+
+.sidebar ul li a {
+    color: white; /* テキスト色 */
+    text-decoration: none; /* 下線なし */
+    display: flex; /* アイコンとテキストを横並び */
+    align-items: center; /* 中央揃え */
+}
+
+.sidebar ul li a i {
+    margin-right: 10px; /* アイコンとテキストの間隔 */
+}
+
+
+/* メニューが表示されたときにメインコンテンツを右にずらす */
+.main-container.active {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+/* サイドメニューオーバーレイのスタイル */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999; /* サイドメニューより下、メニューボタンより上 */
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* メインコンテンツがアクティブな時のスタイル */
+.main-container.active {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+/* ハートアイコンのコンテナ */
+.icon-container {
+    position: relative; /* 相対位置指定 */
+    margin-right: 8px; /* ハートアイコンとテキストの間隔 */
+}
+
+/* ハートアイコンのスタイリング */
+.icon-container .fa-heart {
+    font-size: 24px;
+    color: #ff4757;
+}
+
+/* メッセージアイコンのスタイリング */
+.icon-container .fa-comment {
+    font-size: 12px; /* 小さくする */
+    color: #2ed573;
+    position: absolute; /* 絶対位置指定 */
+    bottom: 0; /* 下に配置 */
+    right: 0; /* 右に配置 */
+    transform: translate(25%, 25%); /* 右下1/4を覆うように調整 */
+}
+
+/* YouTubeアイコンを赤色に変更 */
+.external-link.youtube .fab.fa-youtube {
+    color: #ff0000; /* 赤色 */
+    transition: color 0.3s ease; /* スムーズな色変化 */
+}
+
+/* ホバー時にアイコンを白色に変更 */
+.external-link.youtube:hover .fab.fa-youtube {
+    color: #ffffff; /* 白色 */
+}
+
+/* 画像アップロードエリアのスタイル */
+.image-upload-section {
+    margin: 20px 0;
+}
+
+.upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    min-height: 150px;
+}
+
+.upload-area:hover {
+    border-color: #007bff;
+}
+
+.upload-instructions {
+    color: #666;
+}
+
+.crop-preview {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#cropped-image {
+    max-width: 100%;
+}
+
+/* ===== 心拍数履歴カードのスタイル ===== */
+.heart-rate-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.heart-rate-card h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* ===== Chart.jsのキャンバススタイル ===== */
+#heartRateChart {
+    width: 100% !important;
+    max-width: 600px;
+    height: auto !important;
+}
+
+/* ===== Apple Health風のスタイル ===== */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.chart-container canvas {
+    border-radius: 10px;
+}
+
+/* ===== レスポンシブデザインの調整 ===== */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
+
+    .heart-rate-card h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heart-rate-card h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* プライバシーポリシーページ用のスタイル */
+.privacy-page {
+    background-color: #f9f9f9;
+    font-family: 'Roboto', sans-serif;
+}
+
+.privacy-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.privacy-content h3 {
+    margin-top: 20px;
+    color: #333333;
+}
+
+.privacy-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+/* リンクのホバー効果 */
+.external-link:hover {
+    color: #ff4081; /* 好みの色に変更 */
+    text-decoration: underline;
+}
+
+/* モバイル対応の例 */
+@media (max-width: 600px) {
+    .privacy-content {
+        padding: 15px;
+    }
+
+    .privacy-content h2 {
+        font-size: 1.5em;
+    }
+
+    .privacy-content h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* styles.cssに追加する修正 */
+/* 動画コンテナの調整 */
+.video-container {
+    flex: 1;
+    max-width: 760px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  
+  .video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* メインコンテナのレイアウト調整 */
+  .main-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* レスポンシブ対応 */
+  @media (max-width: 1024px) {
+    .main-container {
+      flex-direction: column;
+    }
+    
+    .video-container {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+  
+  /* 動画の解像度調整用（必要に応じて） */
+  .video-container video {
+    transform: scale(1.05); /* 80%サイズに縮小 */
+    transform-origin: center;
+  }
+
+  /* styles.cssに追加 */
+.animated-background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  .shape {
+    position: absolute;
+    opacity: 0.1;
+    filter: blur(30px);
+    animation: float 20s infinite linear;
+  }
+  
+  .shape-1 {
+    width: 400px;
+    height: 400px;
+    background: #ff3366;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    top: 20%;
+    left: 10%;
+  }
+  
+  .shape-2 {
+    width: 300px;
+    height: 300px;
+    background: #4CAF50;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    top: 50%;
+    right: 15%;
+  }
+  
+  .shape-3 {
+    width: 250px;
+    height: 250px;
+    background: #2196F3;
+    border-radius: 50%;
+    bottom: 10%;
+    left: 25%;
+  }
+  
+  .shape-4 {
+    width: 350px;
+    height: 350px;
+    background: #FFC107;
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+    top: 30%;
+    right: 30%;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+      transform: translateY(-50px) rotate(180deg) scale(1.2);
+    }
+    100% {
+      transform: translateY(0) rotate(360deg) scale(1);
+    }
+  }
+  
+  /* 既存のログインセクションにz-index追加 */
+  .login-section {
+    z-index: 1;
+    position: relative;
+  }
+
+  .card-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  .card {
+    flex: 1;
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+  }
+  
+  .card h1 {
+    color: #e85a5a;
+    font-size: 1.4em;
+    margin: 25px 0 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+  
+  .card ul {
+    padding-left: 20px;
+  }
+  
+  .card li {
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+  
+  .Textmethod {
+    text-align: center;
+    font-size: 2em;
+    color: #333;
+    margin: 40px 0;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .card-container {
+      flex-direction: column;
+    }
+    
+    .card {
+      margin-bottom: 20px;
+    }
+  }

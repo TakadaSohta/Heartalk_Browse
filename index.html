@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Heartalk - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/favicon.ico" type="images/favicon.ico">
+</head>
+<body class="login-page">
+
+    <!-- index.htmlの<body>タグ直下に追加 -->
+    <div class="animated-background">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>
+                <span class="icon-container">
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-comment"></i> <!-- メッセージアイコン -->
+                </span>
+                HearTalk - LOGIN
+            </h1>
+            <div class="header-links">
+                <a href="https://ah.iit.tsukuba.ac.jp/" target="_blank" rel="noopener noreferrer" class="external-link">
+                    <i class="fas fa-link"></i> Research Lab Page
+                </a>
+
+                <!-- 新しく追加するYouTubeリンク -->
+                <a href="https://www.youtube.com/@appliedhapticslaboratory" target="_blank" rel="noopener noreferrer" class="external-link youtube">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+                <a href="privacy.html" target="_blank" rel="noopener noreferrer" class="external-link">
+                    <i class="fas fa-shield-alt"></i> Privacy Policy
+                </a>  
+            </div>
+                  
+        </div>
+    </header>
+
+    
+
+    <main class="main-container">
+        <!-- 左側の動画セクション -->
+        <section class="video-section">
+            <div class="video-container">
+                <video autoplay loop playsinline muted>
+                    <source src="videos/web_MP4.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <!-- 右側のログインセクション -->
+        <section class="login-section">
+            <h2 id="signin-heading">Sign In</h2>
+            <div id="sign-in-methods">
+                <!-- Google サインインボタン -->
+                <button id="google-sign-in" class="sign-in-button">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
+                    Sign in with Google
+                </button>
+            </div>
+            <h3 id="signin-email-heading">Sign In with Email</h3>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="email-sign-in">Sign In</button>
+                <button type="button" id="email-sign-up">Register</button>
+            </form>
+            <div id="error-message" style="display: none; color: red;"></div>
+        </section>
+    </main>
+
+    <div class="Textmethod">
+        心拍でつながる新しいコミュニケーション<br>「Heartalk」
+        <p style="margin-top:0; color:#666;">言葉では伝えきれない心の動きを、Heartalkがサポートします。</p>
+        <p style="margin-top:0; color:#666;">Apple Watchを使って、あなたの心拍数を大切なフレンドと簡単に共有しましょう。</p>
+    </div>
+
+<div class="card-container">
+  <!-- 左側のカード -->
+  <div class="card">
+    
+    
+    <h1>Heartalkの魅力</h1>
+    <ul>
+      <li><strong>心拍をシェア</strong><br>リアルタイムでお互いの心拍数を確認でき、自然と共感やつながりが深まります。</li>
+      <li><strong>シンプル操作</strong><br>ボタン一つで心拍データの共有が可能。日常の中で気軽に楽しめます。</li>
+      <li><strong>プライバシーを守る</strong><br>心拍データはあなたが管理。共有する相手はあなたが選べるので、安心して利用できます。</li>
+    </ul>
+    
+    <p style="color:#666; margin-bottom:0;">言葉がなくても、心がつながる。Heartalkで、大切な人との新しいコミュニケーションを始めてみませんか？</p>
+  </div>
+
+  <!-- 右側のカード -->
+  <div class="card">
+    <h1>こんな時にHeartalkが役立ちます</h1>
+    <ul>
+      <li>遠く離れた家族や友人と心の距離を縮めたいとき</li>
+      <li>一緒に運動したり、リラックスタイムを共有したいとき</li>
+      <li>心の安らぎや安心感を感じたいとき</li>
+    </ul>
+    
+    <div style="margin-top:40px; background:#f8f8f8; padding:20px; border-radius:10px;">
+      <h1 style="margin-top:0; color:#666; font-size:1.2em;">始めるのは簡単</h1>
+      <p style="margin:0; color:#666;">Apple Watchアプリを開いて<br>共有したいフレンドを選ぶだけ</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+      <!-- 他のフッター要素（企業情報、SNSリンク等） -->
+      
+      <!-- ライセンス表記エリア -->
+      <div class="license-section">
+        <p style="font-size:0.9em; color:#666; margin:20px 0 0;">
+            © 2025 Sohta Takada, University of Tsukuba. All rights reserved.
+          <a href="privacy.html" style="color:#666; text-decoration:underline;">プライバシーポリシー</a>｜
+        </p>
+      </div>
+    </div>
+  </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+    <!-- ログイン用スクリプト -->
+    <script src="scripts/login.js"></script>
+</body>
+</html>
