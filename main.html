@@ -14,19 +14,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- QRCode.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <!-- Cropper.js CSS & JS -->
+    <!-- Cropper.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
+    
     <link rel="icon" href="/favicon.ico" type="images/favicon.ico">
 </head>
-
-<!-- バンドルされたJavaScriptファイルの読み込み -->
-<script src="scripts/dist/main.bundle.js"></script>
-
 
 <body class="main-page">
 
@@ -38,7 +30,7 @@
             </button>
 
             <!-- ヘッダータイトル -->
-            <h1>
+            <h1 id="header-title">
                 <span class="icon-container">
                     <i class="fas fa-heart"></i>
                     <i class="fas fa-comment"></i> <!-- メッセージアイコン -->
@@ -51,7 +43,7 @@
         <!-- サイドメニュー -->
         <nav id="sidebar" class="sidebar" aria-label="サイドメニュー">
             <ul>
-                <li><button id="sign-out" class="header-signout-btn">Sigh out</button></li>
+                <li><button id="sign-out" class="header-signout-btn">Sign out</button></li>
                 <li>
                     <a href="https://ah.iit.tsukuba.ac.jp/" target="_blank" rel="noopener noreferrer" class="external-link">
                         <i class="fas fa-link"></i> Research Lab Page
@@ -172,13 +164,8 @@
     </div>
 
     <!-- Firebase SDKは不要（Webpackでバンドル済み） -->
-    <!-- 他のライブラリ（例: Chart.js, QRCode.js）は必要に応じてCDNを使用 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Cropper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <!-- 他のライブラリ（例: Chart.js, QRCode.js）はWebpack経由でインポート -->
+    
     <!-- バンドルされたJavaScriptファイルの読み込み -->
     <script src="scripts/dist/main.bundle.js"></script>
 </body>
