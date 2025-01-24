@@ -602,45 +602,68 @@ function fetchHeartRateHistory(uid) {
                 },
                 options: {
                     responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    font: {
-                                        family: "'Montserrat', sans-serif",
-                                        size: 14
-                                    }
-                                }
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: "'Montserrat', sans-serif",
+                                size: 14
                             },
-                            tooltip: {
-                                titleFont: {
-                                    family: "'Montserrat', sans-serif"
+                            bodyFont: {
+                                family: "'Roboto', sans-serif",
+                                size: 14
+                            },
+                            callbacks: {
+                                title: () => '',
+                                label: (ctx) => `${ctx.raw} bpm`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#95a5a6',
+                                font: {
+                                    family: "'Montserrat', sans-serif",
+                                    size: 12
                                 },
-                                bodyFont: {
-                                    family: "'Roboto', sans-serif"
-                                }
+                                maxRotation: 0,
+                                autoSkipPadding: 20
                             }
                         },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    font: {
-                                        family: "'Montserrat', sans-serif",
-                                        size: 12
-                                    }
-                                }
+                        y: {
+                            min: 60, // Y軸の最小値を固定
+                            max: 120, // Y軸の最大値を固定
+                            grid: {
+                                color: '#ecf0f1'
                             },
-                            y: {
-                                ticks: {
-                                    font: {
-                                        family: "'Roboto', sans-serif",
-                                        size: 12
-                                    }
-                                }
+                            ticks: {
+                                color: '#95a5a6',
+                                font: {
+                                    family: "'Roboto', sans-serif",
+                                    size: 12
+                                },
+                                callback: (value) => `${value} bpm`
                             }
-                        },
+                        }
+                    },
                     animation: {
-                        duration: 1000,
+                        duration: 500, // アニメーションの長さを短くする
                         easing: 'easeOutQuart'
                     },
                     interaction: {
