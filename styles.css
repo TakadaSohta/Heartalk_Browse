@@ -1484,37 +1484,42 @@ header h1 i {
     }
 }
 
-/* styles.cssに追加 */
-#heartRateChart {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    position: relative;
-    min-height: 300px;
-}
-
-.chart-container {
-    position: relative;
-    margin: 2rem 0;
+/* styles.css に追加 */
+/* ===== 心拍数グラフカード ===== */
+.heart-rate-chart-card {
     width: 100%;
-    max-width: 800px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin: 24px 0;
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* グラフホバーエフェクト */
-#heartRateChart:hover {
-    transform: translateY(-2px);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* レスポンシブ調整 */
-@media (max-width: 768px) {
-    #heartRateChart {
-        padding: 10px;
-        border-radius: 12px;
-    }
-    
-    .chart-container {
-        margin: 1rem 0;
-    }
+.chart-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.chart-time-range {
+    font-size: 1rem;
+    color: #95a5a6;
+    background: #f8f9fa;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+#heartRateChart {
+    min-height: 400px;
+    width: 100% !important;
+    height: auto !important;
 }

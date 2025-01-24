@@ -109,7 +109,14 @@
         </div>        
 
         <!-- 心拍数履歴グラフ -->
-                <canvas id="heartRateChart" width="400" height="200" aria-label="心拍数履歴グラフ" role="img"></canvas>
+              <!-- main.html の心拍数グラフ部分を修正 -->
+        <div class="heart-rate-chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">心拍数トレンド</h3>
+                <span class="chart-time-range">直近30分</span>
+            </div>
+            <canvas id="heartRateChart"></canvas>
+        </div>
 
         <!-- フレンドのアカウント情報 -->
         <div class="permitted-users">

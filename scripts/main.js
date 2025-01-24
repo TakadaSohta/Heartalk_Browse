@@ -602,54 +602,43 @@ function fetchHeartRateHistory(uid) {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0,0,0,0.8)',
-                            bodyFont: {
-                                family: "'Montserrat', sans-serif",
-                                size: 14
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    font: {
+                                        family: "'Montserrat', sans-serif",
+                                        size: 14
+                                    }
+                                }
                             },
-                            callbacks: {
-                                title: () => '',
-                                label: (ctx) => `${ctx.raw} bpm`
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#95a5a6',
-                                font: {
-                                    family: "'Roboto', sans-serif",
-                                    size: 12
+                            tooltip: {
+                                titleFont: {
+                                    family: "'Montserrat', sans-serif"
                                 },
-                                maxRotation: 0,
-                                autoSkipPadding: 20
+                                bodyFont: {
+                                    family: "'Roboto', sans-serif"
+                                }
                             }
                         },
-                        y: {
-                            suggestedMin: 60,
-                            suggestedMax: 120,
-                            grid: {
-                                color: '#ecf0f1'
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        family: "'Montserrat', sans-serif",
+                                        size: 12
+                                    }
+                                }
                             },
-                            ticks: {
-                                color: '#95a5a6',
-                                font: {
-                                    family: "'Roboto', sans-serif",
-                                    size: 12
-                                },
-                                callback: (value) => `${value} bpm`
+                            y: {
+                                ticks: {
+                                    font: {
+                                        family: "'Roboto', sans-serif",
+                                        size: 12
+                                    }
+                                }
                             }
-                        }
-                    },
+                        },
                     animation: {
                         duration: 1000,
                         easing: 'easeOutQuart'
@@ -671,6 +660,8 @@ function fetchHeartRateHistory(uid) {
         console.error('心拍数履歴データ取得エラー:', error);
     });
 }
+
+
 
 /************************************************
  * 12. 通知の許可＆FCMトークン
