@@ -1,14 +1,13 @@
-// scripts/main.js
+// scripts/login.js
 
 /************************************************
  * 1. Firebase初期化
  ************************************************/
-
+// Firebaseの設定
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
 
-// Firebaseの設定
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -18,14 +17,15 @@ const firebaseConfig = {
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-  };
-  
-  // Firebaseの初期化
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const database = firebase.database();
-  const storage = firebase.storage();       // ストレージ
-  const messaging = firebase.messaging();   // 通知
+};
+
+// Firebaseの初期化
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+const storage = getStorage(app);
+const messaging = getMessaging(app);
+  // 通知
   
   /************************************************
    * 2. HTML要素の取得
