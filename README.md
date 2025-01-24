@@ -217,8 +217,8 @@ HearTalkへの貢献は大歓迎です。以下の手順に従って貢献して
 ご質問やフィードバックがありましたら、以下までご連絡ください。
 
 - **名前:** あなたの名前
-- **メール:** your.email@example.com
-- **GitHub:** [yourusername](https://github.com/yourusername)
+- **メール:** takada[at]ah.iit.tsukuba.ac.jp
+- **GitHub:** [yourusername](https://github.com/TakadaSohta)
 
 ## 謝辞
 
