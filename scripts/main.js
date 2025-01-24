@@ -1,34 +1,32 @@
-// scripts/main.js
-
 /************************************************
  * 1. Firebase初期化
  ************************************************/
-// Firebaseの設定
 import { initializeApp } from 'firebase/app';
-import { 
-    getAuth, 
-    onAuthStateChanged, 
-    signOut 
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
 } from 'firebase/auth';
-import { 
-    getDatabase, 
-    ref as dbRef, 
-    set, 
-    get, 
-    onValue, 
-    update, 
-    serverTimestamp 
+import {
+    getDatabase,
+    ref as dbRef,
+    set,
+    get,
+    onValue,
+    update,
+    serverTimestamp,
+    off
 } from 'firebase/database';
-import { 
-    getStorage, 
-    ref as storageRef, 
-    uploadBytes, 
-    getDownloadURL 
+import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL
 } from 'firebase/storage';
-import { 
-    getMessaging, 
-    onMessage, 
-    getToken 
+import {
+    getMessaging,
+    onMessage,
+    getToken
 } from 'firebase/messaging';
 import Chart from 'chart.js/auto'; // Chart.jsをインポート
 
@@ -43,7 +41,6 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
-// Firebaseの初期化
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
@@ -53,14 +50,12 @@ const messaging = getMessaging(app);
 /************************************************
  * 2. HTML要素の取得
  ************************************************/
-// ユーザー情報セクション関連
 const userInfoDiv = document.querySelector('.user-info');
 const userNameSpan = document.getElementById('user-name');
 const userImage = document.getElementById('user-image');
 const userHeartRate = document.getElementById('user-heart-rate');
 const signOutBtn = document.getElementById('sign-out');
 
-// プロフィール編集モーダル関連
 const editProfileBtn = document.getElementById('edit-profile');
 const editProfileModal = document.getElementById('edit-profile-modal');
 const closeModalBtn = document.querySelector('.close-button');
@@ -101,7 +96,6 @@ const loadingScreen = document.getElementById('loading-screen');
 let currentLanguage = 'ja'; // デフォルト言語
 let languageData = {};
 
-// 言語ファイルを読み込む関数
 function loadLanguage(lang) {
     fetch(`lang/${lang}.json`)
         .then(response => response.json())
@@ -114,9 +108,7 @@ function loadLanguage(lang) {
         });
 }
 
-// 言語を適用する関数
 function applyLanguage() {
-    // 例: ラベルやテキストの更新
     const headerTitle = document.getElementById('header-title');
     if (headerTitle) {
         headerTitle.textContent =
@@ -140,17 +132,13 @@ function applyLanguage() {
         signOutButton.textContent =
             languageData.sign_out || "サインアウト";
     }
-
-    // 他の要素も必要に応じて更新
 }
 
-// 言語を設定する関数
 function setLanguage(lang) {
     currentLanguage = lang;
     loadLanguage(lang);
 }
 
-// ページ読み込み時にデフォルト言語をロード
 window.addEventListener('load', () => {
     loadLanguage(currentLanguage);
     if (auth.currentUser) {
@@ -186,11 +174,9 @@ function showEditError(message) {
 /************************************************
  * 5. モーダル制御（プロフィール編集）
  ************************************************/
-// モーダル表示
 function openModal() {
     if (editProfileModal) {
         editProfileModal.style.display = 'block';
-        // 現在のユーザー情報をフォームにセット
         if (editProfileForm['edit-username']) {
             editProfileForm['edit-username'].value = userNameSpan.textContent;
         } else {
@@ -201,7 +187,6 @@ function openModal() {
     }
 }
 
-// モーダル非表示
 function closeModal() {
     if (editProfileModal) {
         editProfileModal.style.display = 'none';
@@ -213,7 +198,6 @@ function closeModal() {
     }
 }
 
-// イベントリスナーの追加（存在確認を含む）
 if (editProfileBtn) {
     editProfileBtn.addEventListener('click', openModal);
 } else {
@@ -258,7 +242,12 @@ function hideLoading() {
 }
 
 /************************************************
- * 7. ユーザー認証状態の監視
+ * 7. リスナー管理用の変数（▼ 追加）
+ ************************************************/
+let heartRateListener = null;
+
+/************************************************
+ * 8. ユーザー認証状態の監視
  ************************************************/
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -270,10 +259,9 @@ onAuthStateChanged(auth, (user) => {
             permittedUsersDiv.style.display = 'block';
         }
 
-        // ローディング画面を表示
         showLoading();
 
-        // データ読み込み
+        // ユーザーデータ＆フレンドデータを取得
         Promise.all([
             fetchUserData(user.uid),
             fetchPermittedUsers(user.uid)
@@ -289,6 +277,9 @@ onAuthStateChanged(auth, (user) => {
 
     } else {
         console.log('ユーザーがサインアウトしています。');
+        // ▼ リアルタイムリスナーのクリーンアップ
+        cleanupResources(user?.uid);
+
         if (userInfoDiv) {
             userInfoDiv.style.display = 'none';
         }
@@ -298,79 +289,125 @@ onAuthStateChanged(auth, (user) => {
         if (permittedUsersList) {
             permittedUsersList.innerHTML = '';
         }
-        window.location.href = 'index.html'; // ログイン画面にリダイレクト
+        window.location.href = 'index.html'; // ログイン画面へ
     }
 });
 
 /************************************************
- * 8. ユーザーデータの取得・表示
+ * 9. ユーザー&心拍データ取得処理
  ************************************************/
+/**
+ * ユーザーデータ（名前・画像）を取得し、UIへ反映。
+ * 取得後に心拍監視を初期化して、QRコードを生成。
+ * @param {string} uid
+ */
 function fetchUserData(uid) {
     return new Promise((resolve, reject) => {
         const userRef = dbRef(database, `Username/${uid}`);
         get(userRef)
             .then((snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    userNameSpan.textContent = data.UName || "名前未設定";
-                    userImage.src = data.Uimage || "https://via.placeholder.com/100";
-                } else {
-                    userNameSpan.textContent = "名前未設定";
-                    userImage.src = "https://via.placeholder.com/100";
-                }
+                userNameSpan.textContent = data?.UName || "名前未設定";
+                userImage.src = data?.Uimage || "https://via.placeholder.com/100";
+
+                // ▼ 新規の心拍数監視リスナーの初期化
+                initializeHeartRateMonitoring(uid);
+
+                // ▼ QRコード生成（1回だけ）
+                generateQRCode(uid);
+
                 resolve();
             })
             .catch((error) => {
-                console.error('ユーザーデータ取得エラー:', error);
-                showError('ユーザーデータの取得に失敗しました。');
+                handleUserDataError(error);
                 reject(error);
             });
-
-        // 最新の心拍数の取得
-        const heartRateRef = dbRef(database, `Userdata/${uid}/Heartbeat/Watch1`);
-        onValue(heartRateRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.HeartRate) {
-                userHeartRate.textContent = data.HeartRate;
-                // 心拍数履歴に追加
-                const historyRef = dbRef(database, `Userdata/${uid}/HeartbeatHistory`);
-                const newHistoryRef = dbRef(historyRef, pushId());
-                set(newHistoryRef, {
-                    HeartRate: data.HeartRate,
-                    timestamp: serverTimestamp()
-                })
-                    .then(() => {
-                        console.log('心拍数履歴に追加しました。');
-                    })
-                    .catch((error) => {
-                        console.error('心拍数履歴追加エラー:', error);
-                        showError('心拍数履歴の追加に失敗しました。');
-                    });
-            } else {
-                userHeartRate.textContent = "-";
-            }
-
-            // QRコード生成
-            generateQRCode(uid);
-
-            // 一度だけ読んだらリスナーをオフに
-            heartRateRef.off('value');
-            resolve();
-        }, (error) => {
-            console.error('心拍数データ取得エラー:', error);
-            showError('心拍数データの取得に失敗しました。');
-            reject(error);
-        });
     });
 }
 
-// ユニークなpush IDを生成する関数
+/**
+ * ▼ 心拍数監視の初期化（追加）
+ */
+function initializeHeartRateMonitoring(uid) {
+    // 既存のリスナーをクリーンアップ
+    if (heartRateListener) {
+        off(dbRef(database, `Userdata/${uid}/Heartbeat/Watch1`), heartRateListener);
+    }
+
+    const heartRateRef = dbRef(database, `Userdata/${uid}/Heartbeat/Watch1`);
+    // リアルタイムリスナー設定
+    heartRateListener = onValue(
+        heartRateRef,
+        (snapshot) => {
+            const data = snapshot.val();
+            updateHeartRateDisplay(data?.HeartRate);
+            if (data?.HeartRate) {
+                addHeartRateHistory(uid, data.HeartRate);
+            }
+        },
+        (error) => {
+            handleHeartRateError(error);
+        }
+    );
+}
+
+/**
+ * ▼ ユーザー情報取得時のエラーハンドリング
+ */
+function handleUserDataError(error) {
+    console.error('ユーザーデータ取得エラー:', error);
+    showError('ユーザー情報の取得に失敗しました');
+}
+
+/**
+ * ▼ 心拍数データ取得時のエラーハンドリング
+ */
+function handleHeartRateError(error) {
+    console.error('心拍数データ取得エラー:', error);
+    showError('心拍数データの取得に失敗しました');
+}
+
+/**
+ * ▼ サインアウト時などにリスナーをクリーンアップ
+ */
+function cleanupResources(uid) {
+    if (heartRateListener) {
+        off(dbRef(database, `Userdata/${uid}/Heartbeat/Watch1`), heartRateListener);
+        heartRateListener = null;
+    }
+}
+
+/**
+ * 心拍数を画面に表示
+ */
+function updateHeartRateDisplay(rate) {
+    userHeartRate.textContent = rate || "-";
+}
+
+/**
+ * 新しい心拍数を履歴へ保存
+ */
+function addHeartRateHistory(uid, rate) {
+    const historyRef = dbRef(database, `Userdata/${uid}/HeartbeatHistory`);
+    const newHistoryRef = dbRef(historyRef, pushId());
+    set(newHistoryRef, {
+        HeartRate: rate,
+        timestamp: serverTimestamp()
+    }).catch((error) => {
+        console.error('心拍数履歴追加エラー:', error);
+        showError('心拍数履歴の保存に失敗しました');
+    });
+}
+
+/**
+ * push用のユニークIDを生成
+ */
 function pushId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
 /************************************************
- * 9. 許可されたユーザー（フレンド）情報の取得・表示
+ * 10. 許可されたユーザー（フレンド）情報の取得・表示
  ************************************************/
 function fetchPermittedUsers(uid) {
     return new Promise((resolve, reject) => {
@@ -379,9 +416,7 @@ function fetchPermittedUsers(uid) {
             .then((snapshot) => {
                 const permittedUsers = snapshot.val();
                 if (permittedUsersList) {
-                    permittedUsersList.innerHTML = ''; // リストをクリア
-                } else {
-                    console.error('permitted-users-list が見つかりません');
+                    permittedUsersList.innerHTML = '';
                 }
                 if (permittedUsers) {
                     const permittedUids = Object.keys(permittedUsers).filter(key => permittedUsers[key] === true);
@@ -421,7 +456,6 @@ function fetchPermittedUsers(uid) {
 
 function displayPermittedUser(permittedUid) {
     return new Promise((resolve, reject) => {
-        // ユーザー名と画像の取得
         const usernameRef = dbRef(database, `Username/${permittedUid}`);
         const userdataRef = dbRef(database, `Userdata/${permittedUid}/Heartbeat/Watch1`);
 
@@ -432,11 +466,12 @@ function displayPermittedUser(permittedUid) {
             const usernameData = usernameSnapshot.val();
             const userdata = userdataSnapshot.val();
 
-            const userName = usernameData ? usernameData.UName || "名前未設定" : "名前未設定";
-            const userImageUrl = usernameData ? (usernameData.Uimage || "https://via.placeholder.com/90") : "https://via.placeholder.com/90";
+            const userName = usernameData ? (usernameData.UName || "名前未設定") : "名前未設定";
+            const userImageUrl = usernameData
+                ? (usernameData.Uimage || "https://via.placeholder.com/90")
+                : "https://via.placeholder.com/90";
             const heartRate = userdata && userdata.HeartRate ? userdata.HeartRate : "-";
 
-            // カード生成
             const userCard = document.createElement('div');
             userCard.className = 'user-card';
 
@@ -466,7 +501,7 @@ function displayPermittedUser(permittedUid) {
 }
 
 /************************************************
- * 10. 心拍数履歴グラフの描画
+ * 11. 心拍数履歴グラフの描画
  ************************************************/
 const heartRateChartCtx = document.getElementById('heartRateChart').getContext('2d');
 let heartRateChart = null;
@@ -476,12 +511,10 @@ function fetchHeartRateHistory(uid) {
     onValue(heartRateHistoryRef, (snapshot) => {
         const heartRateData = snapshot.val();
         if (heartRateData) {
-            // データを日時順にソート
             const sortedData = Object.entries(heartRateData).sort((a, b) => a[1].timestamp - b[1].timestamp);
             const labels = sortedData.map(entry => new Date(entry[1].timestamp).toLocaleString());
             const data = sortedData.map(entry => entry[1].HeartRate);
 
-            // グラフ更新
             if (heartRateChart) {
                 heartRateChart.data.labels = labels;
                 heartRateChart.data.datasets[0].data = data;
@@ -531,14 +564,13 @@ function fetchHeartRateHistory(uid) {
 }
 
 /************************************************
- * 11. 通知の許可＆FCMトークン
+ * 12. 通知の許可＆FCMトークン
  ************************************************/
 function requestNotificationPermission() {
-    getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY' }) // VAPIDキーを設定
+    getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY' })
         .then((currentToken) => {
             if (currentToken) {
                 console.log('FCMトークン:', currentToken);
-                // トークンをデータベースに保存
                 const uid = auth.currentUser.uid;
                 set(dbRef(database, `Users/${uid}/fcmToken`), currentToken)
                     .then(() => {
@@ -559,7 +591,6 @@ function requestNotificationPermission() {
         });
 }
 
-// 通知を受信した際の処理
 onMessage(messaging, (payload) => {
     console.log('受信したメッセージ:', payload);
     const notificationTitle = payload.notification.title;
@@ -574,14 +605,14 @@ onMessage(messaging, (payload) => {
 });
 
 /************************************************
- * 12. サインアウト処理
+ * 13. サインアウト処理
  ************************************************/
 if (signOutBtn) {
     signOutBtn.addEventListener('click', () => {
         signOut(auth)
             .then(() => {
                 console.log('サインアウト成功');
-                window.location.href = 'index.html'; // ログイン画面にリダイレクト
+                window.location.href = 'index.html';
             })
             .catch((error) => {
                 console.error('サインアウトエラー:', error);
@@ -593,7 +624,7 @@ if (signOutBtn) {
 }
 
 /************************************************
- * 13. フレンド検索機能（検索ボックス）
+ * 14. フレンド検索機能（検索ボックス）
  ************************************************/
 function filterFriends() {
     const friendSearchInput = document.getElementById('friend-search');
@@ -628,7 +659,6 @@ function filterFriends() {
     }
 }
 
-// イベントリスナーの追加（存在確認を含む）
 const friendSearchInputElement = document.getElementById('friend-search');
 if (friendSearchInputElement) {
     friendSearchInputElement.addEventListener('keyup', filterFriends);
@@ -637,7 +667,7 @@ if (friendSearchInputElement) {
 }
 
 /************************************************
- * 14. QRコード生成
+ * 15. QRコード生成
  ************************************************/
 function generateQRCode(uid) {
     const qrContainer = document.getElementById('qr-code');
@@ -657,7 +687,7 @@ function generateQRCode(uid) {
 }
 
 /************************************************
- * 15. サイドメニューなどUI周り（例）
+ * 16. サイドメニューなどUI周り（例）
  ************************************************/
 document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle');
@@ -694,40 +724,30 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /************************************************
- * 16. 画像アップロード & クロップ機能の統合
+ * 17. 画像アップロード & クロップ機能
  ************************************************/
-// DOM要素（アップロード関連）
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('image-input');
 const cropContainer = document.getElementById('crop-container');
-const previewImage = document.querySelector('#image-preview img'); // 修正済み
+const previewImage = document.querySelector('#image-preview img');
 
-// 画像アップロード関連変数
 let cropper = null;
 let currentImageFile = null;
 
-/**
- * アップロードの初期化
- */
 function initImageUpload() {
     if (!dropZone || !fileInput) {
         console.error('ドロップゾーンまたはファイル入力が見つかりません');
         return;
     }
 
-    // ドラッグ＆ドロップイベント
     dropZone.addEventListener('dragover', handleDragOver);
     dropZone.addEventListener('dragleave', handleDragLeave);
     dropZone.addEventListener('drop', handleDrop);
 
-    // クリックでファイル選択
     dropZone.addEventListener('click', () => fileInput.click());
-
-    // ファイル選択イベント
     fileInput.addEventListener('change', handleFileSelect);
 }
 
-// イベントハンドラ
 function handleDragOver(e) {
     e.preventDefault();
     dropZone.classList.add('dragover');
@@ -748,15 +768,10 @@ function handleFileSelect(e) {
     }
 }
 
-/**
- * 画像ファイルを処理してクロップ画面へ
- */
 function handleImageFile(file) {
     try {
         validateImageFile(file);
         currentImageFile = file;
-
-        // FileをDataURLに変換
         readFileAsDataURL(file).then((imageSrc) => {
             openCropEditor(imageSrc);
         }).catch((error) => {
@@ -767,9 +782,6 @@ function handleImageFile(file) {
     }
 }
 
-/**
- * 画像ファイルのバリデーション
- */
 function validateImageFile(file) {
     const MAX_SIZE_MB = 5;
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
@@ -783,9 +795,6 @@ function validateImageFile(file) {
     }
 }
 
-/**
- * FileオブジェクトをDataURL化
- */
 function readFileAsDataURL(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -795,24 +804,21 @@ function readFileAsDataURL(file) {
     });
 }
 
-/**
- * クロップエディタを起動
- */
 function openCropEditor(imageSrc) {
     if (!dropZone || !cropContainer || !previewImage) {
         console.error('クロップエディタ関連の要素が見つかりません');
         return;
     }
 
-    dropZone.style.display = 'none';                   // ドロップゾーンを隠す
+    dropZone.style.display = 'none';
     const cropEditor = document.querySelector('.crop-editor');
     if (cropEditor) {
-        cropEditor.style.display = 'block'; // クロップ画面を表示
+        cropEditor.style.display = 'block';
     } else {
         console.error('crop-editor クラスの要素が見つかりません');
     }
 
-    destroyCropper();  // 既存Cropperの破棄
+    destroyCropper();
     initializeCropper(imageSrc);
 }
 
@@ -821,7 +827,6 @@ function initializeCropper(imageSrc) {
         console.error('crop-container が見つかりません');
         return;
     }
-
     cropContainer.innerHTML = `<img src="${imageSrc}" alt="編集用画像">`;
     const imageElement = cropContainer.querySelector('img');
 
@@ -835,14 +840,11 @@ function initializeCropper(imageSrc) {
         viewMode: 1,
         autoCropArea: 0.8,
         responsive: true,
-        preview: '#image-preview', // プレビューを設定
+        preview: '#image-preview',
         guides: false
     });
 }
 
-/**
- * クロップをキャンセル
- */
 function cancelCrop() {
     if (!dropZone || !cropContainer || !previewImage) {
         console.error('クロップキャンセル関連の要素が見つかりません');
@@ -861,9 +863,6 @@ function cancelCrop() {
     previewImage.src = '';
 }
 
-/**
- * Cropperインスタンスを破棄
- */
 function destroyCropper() {
     if (cropper) {
         cropper.destroy();
@@ -871,13 +870,8 @@ function destroyCropper() {
     }
 }
 
-/**
- * トリミングしてBlobを得る
- */
 async function getCroppedBlob() {
     if (!cropper) throw new Error('画像が選択されていません');
-
-    // 例として512x512で出力
     const canvas = cropper.getCroppedCanvas({
         width: 512,
         height: 512,
@@ -896,16 +890,12 @@ async function getCroppedBlob() {
     });
 }
 
-/**
- * クロップを適用してプレビューを更新
- */
 async function applyCrop() {
     try {
         const blob = await getCroppedBlob();
         const previewUrl = URL.createObjectURL(blob);
         previewImage.src = previewUrl;
 
-        // クロップエディタを閉じて、再度ドロップゾーンを表示
         const cropEditor = document.querySelector('.crop-editor');
         if (cropEditor) {
             cropEditor.style.display = 'none';
@@ -920,7 +910,6 @@ async function applyCrop() {
     }
 }
 
-// ボタンのイベントリスナー
 const cropCancelBtn = document.querySelector('.crop-cancel-btn');
 const cropConfirmBtn = document.querySelector('.crop-confirm-btn');
 
@@ -937,93 +926,62 @@ if (cropConfirmBtn) {
 }
 
 /************************************************
- * 17. プロフィール更新（フォーム送信）
+ * 18. プロフィール更新（フォーム送信）
  ************************************************/
 if (editProfileForm) {
     editProfileForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // 更新するユーザー名
         const newNameInput = editProfileForm['edit-username'];
         if (!newNameInput) {
             showEditError('edit-username フィールドが見つかりません');
-            console.error('edit-username フィールドが見つかりません');
             return;
         }
         const newName = newNameInput.value.trim();
 
-        // 現在認証中のユーザー
         const uid = auth.currentUser ? auth.currentUser.uid : null;
-
         if (!uid) {
             showEditError('ユーザーが認証されていません');
-            console.error('ユーザーが認証されていません');
             return;
         }
         if (!newName) {
             showEditError('名前を入力してください。');
-            console.error('名前が入力されていません');
             return;
         }
 
         try {
             showLoading();
-            console.log('ローディング画面を表示');
 
-            // デフォルトは既存のimageURL（現在のプロフィール画像）
             let imageUrl = userImage.src;
-            console.log('既存の画像URL:', imageUrl);
-
-            // 新しいファイルが選択されている場合はアップロード
             if (currentImageFile && cropper) {
-                console.log('新しい画像ファイルが選択されています');
-                // Cropped画像をBlobで取得
                 const blob = await getCroppedBlob();
-                console.log('Cropped Blob を取得:', blob);
-                // Storageにアップロード
                 imageUrl = await uploadCroppedImage(blob, uid);
-                console.log('アップロード後の画像URL:', imageUrl);
             }
 
-            // DB更新
             await updateUserProfile(uid, newName, imageUrl);
-            console.log('Firebase Realtime Database を更新');
 
-            // UI更新
             userNameSpan.textContent = newName;
             userImage.src = imageUrl;
-            console.log('UIを更新');
 
-            // モーダルを閉じる
             closeModal();
-            console.log('モーダルを閉じる');
-
         } catch (error) {
             showEditError(`更新に失敗しました: ${error.message}`);
             console.error('更新エラー:', error);
         } finally {
             hideLoading();
-            console.log('ローディング画面を非表示');
         }
     });
 } else {
     console.error('edit-profile-form が見つかりません');
 }
 
-/**
- * クロップした画像をStorageにアップロードしてURLを返す
- */
 async function uploadCroppedImage(blob, uid) {
     const filename = `profile_${Date.now()}.jpg`;
     const imageReference = storageRef(storage, `users/${uid}/images/${filename}`);
     const snapshot = await uploadBytes(imageReference, blob);
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    return downloadURL;
+    return await getDownloadURL(snapshot.ref);
 }
 
-/**
- * ユーザー情報をRealtime Databaseに更新
- */
 async function updateUserProfile(uid, name, imageUrl) {
     const updates = {
         UName: name,
@@ -1033,3 +991,6 @@ async function updateUserProfile(uid, name, imageUrl) {
     const userReference = dbRef(database, `Username/${uid}`);
     await update(userReference, updates);
 }
+
+// 初期化処理（ページ読み込み時に呼び出し）
+initImageUpload();
