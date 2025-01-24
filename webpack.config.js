@@ -9,12 +9,14 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'public/js'),
+    path: path.resolve(__dirname, 'scripts/dist'),
+    clean: true,
   },
   plugins: [
     new Dotenv({
       path: './.env', // .envファイルのパス
-      safe: false,    // trueにすると .env.example が必要
+      safe: false,
+      systemvars: true,
     }),
   ],
   module: {
@@ -32,5 +34,6 @@ module.exports = {
       // 必要に応じて他のローダーを追加
     ],
   },
-  mode: 'production', // 開発時は 'development' に変更可能
+  mode: 'production', // 開発時は 'development' に変更
+  devtool: 'source-map',
 };
