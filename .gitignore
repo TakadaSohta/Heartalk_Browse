@@ -7,5 +7,3 @@ node_modules/
 # Webpackの出力ディレクトリ
 public/js/*.bundle.js
 
-# その他の無視したいファイルやディレクトリ
-dist/
