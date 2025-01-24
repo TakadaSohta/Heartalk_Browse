@@ -587,96 +587,65 @@ function fetchHeartRateHistory(uid) {
             gradient.addColorStop(1, 'rgba(231, 76, 60, 0.1)');
 
             const config = {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '心拍数トレンド',
-                        data: data,
-                        borderColor: '#e74c3c',
-                        borderWidth: 2,
-                        backgroundColor: gradient,
-                        fill: true,
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        pointBackgroundColor: '#fff',
-                        tension: 0.4,
-                        cubicInterpolationMode: 'monotone'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 20,
-                            bottom: 20,
-                            left: 20
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleFont: {
-                                family: "'Montserrat', sans-serif",
-                                size: 14
-                            },
-                            bodyFont: {
-                                family: "'Roboto', sans-serif",
-                                size: 14
-                            },
-                            callbacks: {
-                                title: () => '',
-                                label: (ctx) => `${ctx.raw} bpm`
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#95a5a6',
-                                font: {
-                                    family: "'Montserrat', sans-serif",
-                                    size: 12
-                                },
-                                maxRotation: 0,
-                                autoSkipPadding: 20
-                            }
-                        },
-                        y: {
-                            type: 'linear', // 明示的に線形軸を指定
-                            min: 60,
-                            max: 120,
-                            beginAtZero: false,
-                            grace: '5%',
-                            grid: { color: '#ecf0f1' },
-                            ticks: {
-                              color: '#95a5a6',
-                              font: { family: "'Roboto', sans-serif", size: 12 },
-                              callback: (value) => `${value} bpm`,
-                              min: 60,
-                              max: 120
-                              
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 500, // アニメーションの長さを短くする
-                        easing: 'easeOutQuart'
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false
-                    }
-                }
-            };
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '心拍数トレンド',
+      data: data,
+      borderWidth: 3, // 線を太く
+      borderColor: '#FF6B6B', // 赤系のアクセントカラー
+      backgroundColor: 'rgba(255, 107, 107, 0.1)', // 薄いベース色
+      pointStyle: 'circle', // ポイントスタイル
+      pointRadius: 5, // ポイントサイズ拡大
+      pointHoverRadius: 8,
+      pointBackgroundColor: '#FFFFFF', // 白抜き
+      pointBorderColor: '#FF6B6B',
+      pointBorderWidth: 2,
+      tension: 0.3, // カーブ調整
+      fill: true // 背景塗りつぶし
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }, // 凡例非表示
+      tooltip: {
+        backgroundColor: '#2D3047',
+        titleColor: '#FFFFFF',
+        bodyColor: '#FFFFFF',
+        displayColors: false
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#E0E0E0' }, // 薄いグリッド線
+        ticks: {
+          color: '#666666',
+          font: { size: 12 }
+        }
+      },
+      y: {
+        min: 60,
+        max: 120,
+        grid: { color: '#E0E0E0' },
+        ticks: {
+          color: '#666666',
+          font: { size: 12 },
+          stepSize: 20,
+          callback: value => `${value} bpm`
+        }
+      }
+    },
+    layout: {
+      padding: {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 20
+      }
+    }
+  }
+};
 
             // グラフを破棄して再作成
             if (heartRateChart) {

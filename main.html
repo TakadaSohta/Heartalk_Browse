@@ -110,13 +110,28 @@
 
         <!-- 心拍数履歴グラフ -->
               <!-- main.html の心拍数グラフ部分を修正 -->
-        <div class="heart-rate-chart-card">
-            <div class="chart-header">
-                <h3 class="chart-title">心拍数トレンド</h3>
-                <span class="chart-time-range">直近30分</span>
-            </div>
-            <canvas id="heartRateChart"></canvas>
-        </div>
+              <div class="heart-rate-chart-card">
+                <!-- 既存のヘッダー -->
+                <div class="chart-header">
+                  <h3 class="chart-title">心拍数トレンド</h3>
+                  <span class="chart-time-range">直近30分</span>
+                </div>
+                
+                <!-- 平均値表示エリア追加 -->
+                <div class="average-display">
+                  <div class="average-value">
+                    <span class="label">平均心拍数</span>
+                    <span class="value">74</span>
+                    <span class="unit">拍/分</span>
+                  </div>
+                  <div class="average-period">2024年12月25日~2025年1月24日</div>
+                </div>
+              
+                <!-- グラフエリア -->
+                <div class="chart-wrapper">
+                  <canvas id="heartRateChart"></canvas>
+                </div>
+              </div>
 
         <!-- フレンドのアカウント情報 -->
         <div class="permitted-users">
