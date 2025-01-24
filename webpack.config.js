@@ -9,8 +9,8 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'scripts/dist'),
-    clean: true,
+    path: path.resolve(__dirname, 'docs/js'),
+    clean: true, // ビルド前に出力ディレクトリをクリーン
   },
   plugins: [
     new Dotenv({
@@ -34,6 +34,6 @@ module.exports = {
       // 必要に応じて他のローダーを追加
     ],
   },
-  mode: 'production', // 開発時は 'development' に変更
-  devtool: 'source-map',
+  mode: 'production', // 開発時は 'development' に変更可能
+  devtool: 'source-map', // デバッグ用にソースマップを生成
 };
