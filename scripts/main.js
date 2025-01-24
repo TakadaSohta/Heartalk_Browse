@@ -647,18 +647,15 @@ function fetchHeartRateHistory(uid) {
                             }
                         },
                         y: {
-                            min: 60, // Y軸の最小値を固定
-                            max: 120, // Y軸の最大値を固定
-                            grid: {
-                                color: '#ecf0f1'
-                            },
+                            min: 60,
+                            max: 120,
+                            beginAtZero: false,
+                            grace: '5%',
+                            grid: { color: '#ecf0f1' },
                             ticks: {
-                                color: '#95a5a6',
-                                font: {
-                                    family: "'Roboto', sans-serif",
-                                    size: 12
-                                },
-                                callback: (value) => `${value} bpm`
+                              color: '#95a5a6',
+                              font: { family: "'Roboto', sans-serif", size: 12 },
+                              callback: (value) => `${value} bpm`
                             }
                         }
                     },
