@@ -5,9 +5,16 @@
  ************************************************/
 // Firebaseの設定
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { 
+    getAuth, 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword 
+} from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
-
+import { getStorage } from 'firebase/storage';         // ストレージ
+import { getMessaging } from 'firebase/messaging';     // メッセージング
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,

@@ -9,7 +9,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'docs/js'),
+    path: path.resolve(__dirname, 'docs/js'), // GitHub Pagesが 'docs' フォルダを参照する場合
     clean: true, // ビルド前に出力ディレクトリをクリーン
   },
   plugins: [
