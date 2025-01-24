@@ -575,7 +575,11 @@ function fetchHeartRateHistory(uid) {
                 })
             );
 
-            const data = sortedData.map(entry => entry[1].HeartRate);
+            // データ処理部分にクリッピングを追加
+            const data = sortedData.map(entry => {
+                const rate = entry[1].HeartRate;
+                return Math.min(Math.max(rate, 60), 120); // 60-120の範囲にクリップ
+            });
 
             // グラフの設定
             const gradient = heartRateChartCtx.createLinearGradient(0, 0, 0, 400);
@@ -647,6 +651,7 @@ function fetchHeartRateHistory(uid) {
                             }
                         },
                         y: {
+                            type: 'linear', // 明示的に線形軸を指定
                             min: 60,
                             max: 120,
                             beginAtZero: false,
@@ -655,7 +660,10 @@ function fetchHeartRateHistory(uid) {
                             ticks: {
                               color: '#95a5a6',
                               font: { family: "'Roboto', sans-serif", size: 12 },
-                              callback: (value) => `${value} bpm`
+                              callback: (value) => `${value} bpm`,
+                              min: 60,
+                              max: 120
+                              
                             }
                         }
                     },
