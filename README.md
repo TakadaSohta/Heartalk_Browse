@@ -1,6 +1,6 @@
 # HearTalk
 
-![HearTalk ロゴ](https://via.placeholder.com/150) <!-- 実際のロゴに置き換えてください -->
+![HearTalk ロゴ](https://github.com/TakadaSohta/Heartalk_Browse/blob/main/images/icon.png) <!-- 実際のロゴに置き換えてください -->
 
 **HearTalk**は、ユーザーが心拍数データをリアルタイムで追跡し、プロフィールを管理し、友達とつながり、タイムリーな通知を受け取ることができるウェブアプリケーションです。最新のウェブ技術とFirebaseを活用し、シームレスでインタラクティブなユーザー体験を提供します。
 
@@ -27,14 +27,6 @@
 - **通知:** Firebase Cloud Messaging（FCM）を使用してリアルタイム通知を受信。
 - **レスポンシブデザイン:** デスクトップとモバイルデバイスの両方に最適化。
 - **アクセシビリティ:** ARIAラベルやキーボードナビゲーションサポートを含むアクセシビリティを考慮した設計。
-
-## デモ
-
-![心拍数グラフ](https://via.placeholder.com/800x400) <!-- 実際のスクリーンショットに置き換えてください -->
-*リアルタイムの心拍数モニタリンググラフ。*
-
-![プロフィール編集](https://via.placeholder.com/800x400) <!-- 実際のスクリーンショットに置き換えてください -->
-*画像クロップ機能を備えたユーザープロフィール編集。*
 
 ## 使用技術
 
@@ -225,8 +217,8 @@ HearTalkへの貢献は大歓迎です。以下の手順に従って貢献して
 ご質問やフィードバックがありましたら、以下までご連絡ください。
 
 - **名前:** あなたの名前
-- **メール:** your.email@example.com
-- **GitHub:** [yourusername](https://github.com/yourusername)
+- **メール:** takada[at]ah.iit.tsukuba.ac.jp
+- **GitHub:** [yourusername](https://github.com/TakadaSohta)
 
 ## 謝辞
 
