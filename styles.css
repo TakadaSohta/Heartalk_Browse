@@ -1388,3 +1388,96 @@ header h1 i {
   }
 
   /* ===== スマホアプリダウンロードセクション ===== */
+.app-download-section {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin: 40px 20px;
+}
+
+.app-download-section h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.app-download-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.app-links a {
+    display: inline-block;
+}
+
+.app-badge {
+    width: 150px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.app-badge:hover {
+    transform: scale(1.05);
+}
+
+.qr-code {
+    text-align: center;
+}
+
+.qr-code p {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.qr-image {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease;
+}
+
+.qr-image:hover {
+    transform: scale(1.05);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+    .app-download-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .app-badge {
+        width: 120px;
+    }
+
+    .qr-image {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-download-section {
+        padding: 30px 10px;
+    }
+
+    .app-badge {
+        width: 100px;
+    }
+
+    .qr-image {
+        width: 100px;
+        height: 100px;
+    }
+}
