@@ -1387,14 +1387,16 @@ header h1 i {
     }
   }
 
-  /* ===== スマホアプリダウンロードセクション ===== */
+/* ===== スマホアプリダウンロードセクション ===== */
 .app-download-section {
     background-color: #ffffff;
     padding: 40px 20px;
     text-align: center;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin: 40px 20px;
+    margin: 40px auto; /* 上下のマージン40px、左右は自動で中央揃え */
+    max-width: 600px; /* セクションの最大幅を600pxに設定 */
+    width: 90%; /* 幅を90%に設定し、余裕を持たせる */
 }
 
 .app-download-section h2 {
