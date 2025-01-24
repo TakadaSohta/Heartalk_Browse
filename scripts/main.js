@@ -3,6 +3,11 @@
 /************************************************
  * 1. Firebase初期化
  ************************************************/
+
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
+
 // Firebaseの設定
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
