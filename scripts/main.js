@@ -550,62 +550,125 @@ let heartRateChart = null;
 /**
  * 自分の心拍数履歴を取得し、Chart.jsでグラフ表示
  */
+// main.jsのfetchHeartRateHistory関数を以下のように修正
+
 function fetchHeartRateHistory(uid) {
     const heartRateHistoryRef = dbRef(database, `Userdata/${uid}/HeartbeatHistory`);
+    
+    // 既存のリスナーがあれば削除
+    if (heartRateChart) {
+        heartRateChart.destroy();
+    }
+
     onValue(heartRateHistoryRef, (snapshot) => {
         const heartRateData = snapshot.val();
         if (heartRateData) {
-            // データを日時順にソート
-            const sortedData = Object.entries(heartRateData).sort((a, b) => a[1].timestamp - b[1].timestamp);
-            const labels = sortedData.map(entry => new Date(entry[1].timestamp).toLocaleString());
+            // データを時系列でソート
+            const sortedData = Object.entries(heartRateData)
+                .sort((a, b) => a[1].timestamp - b[1].timestamp)
+                .slice(-30); // 直近30件のみ表示
+
+            const labels = sortedData.map(entry => 
+                new Date(entry[1].timestamp).toLocaleTimeString('ja-JP', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            );
+
             const data = sortedData.map(entry => entry[1].HeartRate);
 
-            // グラフ更新
-            if (heartRateChart) {
-                heartRateChart.data.labels = labels;
-                heartRateChart.data.datasets[0].data = data;
-                heartRateChart.update();
-            } else {
-                heartRateChart = new Chart(heartRateChartCtx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: '心拍数',
-                            data: data,
-                            borderColor: '#e74c3c',
-                            backgroundColor: 'rgba(231, 76, 60, 0.2)',
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: '日時'
-                                }
+            // グラフの設定
+            const gradient = heartRateChartCtx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(231, 76, 60, 0.8)');
+            gradient.addColorStop(1, 'rgba(231, 76, 60, 0.1)');
+
+            const config = {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '心拍数トレンド',
+                        data: data,
+                        borderColor: '#e74c3c',
+                        borderWidth: 2,
+                        backgroundColor: gradient,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#fff',
+                        tension: 0.4,
+                        cubicInterpolationMode: 'monotone'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            bodyFont: {
+                                family: "'Montserrat', sans-serif",
+                                size: 14
                             },
-                            y: {
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: '心拍数'
-                                },
-                                suggestedMin: 60,
-                                suggestedMax: 100
+                            callbacks: {
+                                title: () => '',
+                                label: (ctx) => `${ctx.raw} bpm`
                             }
                         }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#95a5a6',
+                                font: {
+                                    family: "'Roboto', sans-serif",
+                                    size: 12
+                                },
+                                maxRotation: 0,
+                                autoSkipPadding: 20
+                            }
+                        },
+                        y: {
+                            suggestedMin: 60,
+                            suggestedMax: 120,
+                            grid: {
+                                color: '#ecf0f1'
+                            },
+                            ticks: {
+                                color: '#95a5a6',
+                                font: {
+                                    family: "'Roboto', sans-serif",
+                                    size: 12
+                                },
+                                callback: (value) => `${value} bpm`
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        intersect: false
                     }
-                });
+                }
+            };
+
+            // グラフを破棄して再作成
+            if (heartRateChart) {
+                heartRateChart.destroy();
             }
+            heartRateChart = new Chart(heartRateChartCtx, config);
         }
     }, (error) => {
         console.error('心拍数履歴データ取得エラー:', error);
-        showError('心拍数履歴データの取得に失敗しました。');
     });
 }
 

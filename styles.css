@@ -1483,3 +1483,38 @@ header h1 i {
         height: 100px;
     }
 }
+
+/* styles.cssに追加 */
+#heartRateChart {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: relative;
+    min-height: 300px;
+}
+
+.chart-container {
+    position: relative;
+    margin: 2rem 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* グラフホバーエフェクト */
+#heartRateChart:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+    #heartRateChart {
+        padding: 10px;
+        border-radius: 12px;
+    }
+    
+    .chart-container {
+        margin: 1rem 0;
+    }
+}
