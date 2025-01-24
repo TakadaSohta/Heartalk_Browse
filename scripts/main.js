@@ -12,7 +12,8 @@ import {
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword 
 } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, get, onValue } from 'firebase/database';
+
 import { getStorage } from 'firebase/storage';         // ストレージ
 import { getMessaging } from 'firebase/messaging';     // メッセージング
 const firebaseConfig = {
@@ -515,18 +516,19 @@ const messaging = getMessaging(app);
   }
   
   // 通知を受信した際の処理
-  messaging.onMessage((payload) => {
-      console.log('受信したメッセージ:', payload);
-      const notificationTitle = payload.notification.title;
-      const notificationOptions = {
-          body: payload.notification.body,
-          icon: payload.notification.icon || 'https://via.placeholder.com/100'
-      };
-  
-      if (Notification.permission === 'granted') {
-          new Notification(notificationTitle, notificationOptions);
-      }
-  });
+  // メッセージを受信した際の処理
+onMessage(messaging, (payload) => {
+    console.log('受信したメッセージ:', payload);
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.icon || 'https://via.placeholder.com/100'
+    };
+
+    if (Notification.permission === 'granted') {
+        new Notification(notificationTitle, notificationOptions);
+    }
+});
   
   /************************************************
    * 12. サインアウト処理
