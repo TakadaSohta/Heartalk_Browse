@@ -1,6 +1,6 @@
 # HearTalk
 
-![HearTalk ロゴ](https://via.placeholder.com/150) <!-- 実際のロゴに置き換えてください -->
+![HearTalk ロゴ](https://github.com/TakadaSohta/Heartalk_Browse/blob/main/images/icon.png) <!-- 実際のロゴに置き換えてください -->
 
 **HearTalk**は、ユーザーが心拍数データをリアルタイムで追跡し、プロフィールを管理し、友達とつながり、タイムリーな通知を受け取ることができるウェブアプリケーションです。最新のウェブ技術とFirebaseを活用し、シームレスでインタラクティブなユーザー体験を提供します。
 
