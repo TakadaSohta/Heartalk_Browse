@@ -119,7 +119,7 @@ function applyLanguage() {
     const headerTitle = document.getElementById('header-title');
     if (headerTitle) {
         headerTitle.textContent =
-            languageData.header_title || "ユーザー情報とフレンド情報";
+            languageData.header_title || "Main menu";
     }
 
     const userInfoHeader = document.querySelector('.user-info h2');
@@ -591,7 +591,7 @@ function fetchHeartRateHistory(uid) {
   data: {
     labels: labels,
     datasets: [{
-      label: '心拍数トレンド',
+      label: 'Heart Rate Trend',
       data: data,
       borderWidth: 3, // 線を太く
       borderColor: '#FF6B6B', // 赤系のアクセントカラー
