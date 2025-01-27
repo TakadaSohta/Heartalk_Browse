@@ -125,19 +125,19 @@ function applyLanguage() {
     const userInfoHeader = document.querySelector('.user-info h2');
     if (userInfoHeader) {
         userInfoHeader.textContent =
-            languageData.user_info_title || "自分のアカウント";
+            languageData.user_info_title || "My Account";
     }
 
     const editProfileButton = document.getElementById('edit-profile');
     if (editProfileButton) {
         editProfileButton.textContent =
-            languageData.edit_profile || "プロフィール編集";
+            languageData.edit_profile || "Edit profile";
     }
 
     const signOutButton = document.getElementById('sign-out');
     if (signOutButton) {
         signOutButton.textContent =
-            languageData.sign_out || "サインアウト";
+            languageData.sign_out || "Sign out";
     }
 
     // 他の要素も必要に応じて更新
